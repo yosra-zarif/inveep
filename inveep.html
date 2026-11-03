@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Inveep - Stock Alert</title>
 
 <style>
@@ -13,99 +14,129 @@
 
 body {
     margin: 0;
-    padding: 30px;
+    padding: 35px;
     font-family: Arial, sans-serif;
-    background: #f4f8f5;
-    color: #26382d;
+    background: #f5f5f2;
+    color: #171717;
 }
 
 .container {
-    max-width: 1100px;
+    max-width: 1150px;
     margin: auto;
 }
 
-header {
-    background: #176b45;
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 38px;
+}
+
+.logo-icon {
+    width: 55px;
+    height: 55px;
+    background: #07120d;
     color: white;
-    padding: 25px;
-    border-radius: 14px;
-    margin-bottom: 25px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 27px;
 }
 
-header h1 {
-    margin: 0 0 8px;
-}
-
-header p {
+.logo h1 {
     margin: 0;
-    opacity: 0.9;
+    font-size: 32px;
+    letter-spacing: 1px;
 }
 
+.logo p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Titre */
+.page-title {
+    margin-bottom: 30px;
+}
+
+.page-title h2 {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.page-title p {
+    font-size: 16px;
+}
+
+/* Blocs principaux */
 .main {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 22px;
 }
 
 .card {
-    background: white;
+    background: #fffefa;
     padding: 25px;
-    border-radius: 14px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    border-radius: 15px;
+    border-top: 6px solid #075333;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.04);
 }
 
-h2 {
-    color: #176b45;
-    margin-top: 0;
+.card h3 {
+    margin-top: 5px;
+    margin-bottom: 25px;
+    font-size: 21px;
 }
 
+/* Tableau */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
-}
-
-th, td {
-    padding: 13px 8px;
-    text-align: left;
-    border-bottom: 1px solid #e6eee8;
 }
 
 th {
-    background: #edf5ef;
-    color: #176b45;
+    background: #e9edef;
+    padding: 15px 8px;
+    text-align: center;
 }
 
+td {
+    padding: 15px 8px;
+    text-align: center;
+    border-bottom: 1px solid #eeeeee;
+}
+
+/* Formulaire */
 .form-group {
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 9px;
 }
 
-input, select {
+select, input {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ccd9cf;
+    padding: 13px;
+    border: 1px solid #cccccc;
     border-radius: 8px;
     font-size: 15px;
     background: white;
-}
-
-input:focus, select:focus {
-    outline: 2px solid #72ad89;
-    border-color: #176b45;
+    color: #333;
 }
 
 button {
     width: 100%;
-    padding: 13px;
+    padding: 15px;
     border: none;
     border-radius: 8px;
-    background: #176b45;
+    background: linear-gradient(90deg, #159d80, #006044);
     color: white;
     font-size: 16px;
     font-weight: bold;
@@ -113,61 +144,39 @@ button {
 }
 
 button:hover {
-    background: #105536;
+    opacity: 0.9;
 }
 
+/* Message de résultat */
 .result {
-    margin-top: 22px;
-    padding: 20px;
-    border-radius: 10px;
-    display: none;
+    margin-top: 17px;
+    padding: 18px 12px;
+    border-radius: 8px;
+    background: #f1f2f0;
     text-align: center;
-}
-
-.result h3 {
-    margin-top: 0;
-}
-
-.result .days {
-    font-size: 30px;
+    font-size: 15px;
     font-weight: bold;
-    margin: 12px 0;
+    display: none;
 }
 
-/* Couleurs des trois niveaux de risque */
-
-.risk-high {
-    background: #fde8e8;
-    border: 1px solid #e53935;
-    color: #c62828;
+/* Couleurs du message uniquement */
+.risk-red {
+    color: #dc2626;
 }
 
-.risk-medium {
-    background: #fff1df;
-    border: 1px solid #f39c12;
-    color: #c77700;
+.risk-orange {
+    color: #e58a00;
 }
 
-.risk-low {
-    background: #e5f5e9;
-    border: 1px solid #2e9d50;
-    color: #207a3b;
+.risk-green {
+    color: #16803c;
 }
 
 .risk-neutral {
-    background: #edf1f3;
-    border: 1px solid #9aa8ae;
-    color: #455a64;
+    color: #64746c;
 }
 
-footer {
-    text-align: center;
-    margin-top: 25px;
-    color: #718078;
-    font-size: 13px;
-}
-
-@media(max-width: 750px) {
+@media (max-width: 750px) {
     body {
         padding: 15px;
     }
@@ -183,76 +192,81 @@ footer {
 
 <div class="container">
 
-<header>
-    <h1>🌿 Inveep - Stock Alert</h1>
-    <p>Suivi intelligent des stocks et anticipation des risques de rupture</p>
-</header>
-
-<div class="main">
-
-    <!-- Tableau des produits -->
-    <div class="card">
-        <h2>📦 Tableau des stocks</h2>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Produit</th>
-                    <th>Stock</th>
-                    <th>Vente/j</th>
-                </tr>
-            </thead>
-
-            <tbody id="productTable"></tbody>
-        </table>
+    <!-- Logo Inveep -->
+    <div class="logo">
+        <div class="logo-icon">◈</div>
+        <div>
+            <h1>inveep</h1>
+            <p>SMART STOCK MANAGEMENT</p>
+        </div>
     </div>
 
-    <!-- Calculateur -->
-    <div class="card">
-        <h2>📊 Analyse du stock</h2>
+    <!-- Titre -->
+    <div class="page-title">
+        <h2>Stock Alert</h2>
+        <p>Suivi des stocks et prévision des ruptures</p>
+    </div>
 
-        <div class="form-group">
-            <label for="product">Choisir un produit</label>
-            <select id="product" onchange="selectProduct()">
-                <option value="">-- Sélectionner --</option>
-            </select>
+    <div class="main">
+
+        <!-- État des stocks -->
+        <div class="card">
+
+            <h3>État des stocks</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Stock</th>
+                        <th>Vente/j</th>
+                    </tr>
+                </thead>
+
+                <tbody id="productTable"></tbody>
+            </table>
+
         </div>
 
-        <div class="form-group">
-            <label for="stock">Stock disponible</label>
-            <input type="number" id="stock" min="0" step="any"
-                   placeholder="Saisir le stock">
-        </div>
+        <!-- Calculateur -->
+        <div class="card">
 
-        <div class="form-group">
-            <label for="sales">Ventes journalières</label>
-            <input type="number" id="sales" min="0" step="any"
-                   placeholder="Saisir les ventes par jour">
-        </div>
+            <h3>Calculateur de stock</h3>
 
-        <button onclick="calculateRisk()">
-            Calculer le risque
-        </button>
+            <div class="form-group">
+                <label for="product">Type de produit :</label>
 
-        <div id="result" class="result">
-            <h3 id="riskTitle"></h3>
-            <div class="days" id="days"></div>
-            <p id="message"></p>
+                <select id="product" onchange="selectProduct()">
+                    <option value="">Sélectionner un produit</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="stock">Stock disponible :</label>
+
+                <input type="number" id="stock" min="0" step="any">
+            </div>
+
+            <div class="form-group">
+                <label for="sales">Ventes par jour :</label>
+
+                <input type="number" id="sales" min="0" step="any">
+            </div>
+
+            <button onclick="calculateStock()">Calculer</button>
+
+            <!-- Message de résultat -->
+            <div id="result" class="result"></div>
+
         </div>
 
     </div>
-
-</div>
-
-<footer>
-    Inveep © 2026 - Gestion intelligente des stocks
-</footer>
 
 </div>
 
 <script>
 
-// Données des produits
+// Liste des produits
 const products = [
     { name: "Café 250g", stock: 40, sales: 4 },
     { name: "Huile d'olive 1L", stock: 160, sales: 24 },
@@ -261,23 +275,24 @@ const products = [
     { name: "Sucre 1kg", stock: 220, sales: 27 }
 ];
 
-// Remplir le tableau
+// Afficher les produits dans le tableau et la liste
 function displayProducts() {
 
     const table = document.getElementById("productTable");
     const select = document.getElementById("product");
 
+    table.innerHTML = "";
+    select.innerHTML = '<option value="">Sélectionner un produit</option>';
+
     products.forEach((p, index) => {
 
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-            <td>${p.name}</td>
-            <td>${p.stock}</td>
-            <td>${p.sales}</td>
+        table.innerHTML += `
+            <tr>
+                <td>${p.name}</td>
+                <td>${p.stock}</td>
+                <td>${p.sales}</td>
+            </tr>
         `;
-
-        table.appendChild(row);
 
         const option = document.createElement("option");
         option.value = index;
@@ -291,8 +306,8 @@ function displayProducts() {
 function selectProduct() {
 
     const index = document.getElementById("product").value;
-
     const result = document.getElementById("result");
+
     result.style.display = "none";
 
     if (index === "") {
@@ -301,15 +316,14 @@ function selectProduct() {
         return;
     }
 
-    const p = products[index];
-
-    // Valeurs préremplies, mais modifiables manuellement
-    document.getElementById("stock").value = p.stock;
-    document.getElementById("sales").value = p.sales;
+    document.getElementById("stock").value = products[index].stock;
+    document.getElementById("sales").value = products[index].sales;
 }
 
-// Calculer le risque
-function calculateRisk() {
+// Calculer le stock
+function calculateStock() {
+
+    const index = document.getElementById("product").value;
 
     const stockInput = document.getElementById("stock").value;
     const salesInput = document.getElementById("sales").value;
@@ -318,13 +332,10 @@ function calculateRisk() {
     const sales = Number(salesInput);
 
     const result = document.getElementById("result");
-    const riskTitle = document.getElementById("riskTitle");
-    const daysElement = document.getElementById("days");
-    const message = document.getElementById("message");
 
-    // Vérification des données
+    // Vérification
     if (
-        document.getElementById("product").value === "" ||
+        index === "" ||
         stockInput === "" ||
         salesInput === "" ||
         !Number.isFinite(stock) ||
@@ -332,66 +343,73 @@ function calculateRisk() {
         stock < 0 ||
         sales < 0
     ) {
-        alert("Veuillez saisir des valeurs valides.");
+        alert("Veuillez sélectionner un produit et saisir des valeurs valides.");
         return;
     }
 
+    // Actualiser les données du produit
+    products[index].stock = stock;
+    products[index].sales = sales;
+
+    displayProducts();
+
+    // Restaurer le produit sélectionné
+    document.getElementById("product").value = index;
+
     result.style.display = "block";
 
-    // Réinitialiser les couleurs
+    // Réinitialiser les classes
     result.className = "result";
 
-    // Cas où les ventes sont nulles
+    // Aucune vente
     if (sales === 0) {
 
         result.classList.add("risk-neutral");
 
-        riskTitle.textContent = "Aucune vente enregistrée";
-        daysElement.textContent = "∞";
-        message.textContent =
-            "Les ventes journalières sont nulles. Le risque de rupture ne peut pas être estimé.";
+        result.textContent =
+            "Aucune vente enregistrée. Le risque de rupture ne peut pas être estimé.";
 
         return;
     }
 
-    // Calcul du nombre de jours restants
-    const remainingDays = stock / sales;
+    // Calcul des jours avant rupture
+    const days = stock / sales;
 
-    daysElement.textContent = remainingDays.toFixed(1) + " jours";
+    const daysRounded = Math.ceil(days);
 
-    // Classification du risque
-    if (remainingDays <= 3) {
+    // RISQUE DE RUPTURE : ROUGE
+    if (days <= 3) {
 
-        result.classList.add("risk-high");
+        result.classList.add("risk-red");
 
-        riskTitle.textContent = "🔴 RISQUE DE RUPTURE";
-
-        message.textContent =
-            "Attention ! Le stock risque d'être épuisé dans 3 jours ou moins. Un réapprovisionnement est urgent.";
-
-    }
-
-    else if (remainingDays <= 7) {
-
-        result.classList.add("risk-medium");
-
-        riskTitle.textContent = "🟠 RISQUE MOYEN";
-
-        message.textContent =
-            "Le stock est limité. Il est conseillé de prévoir un réapprovisionnement prochainement.";
+        result.textContent =
+            "Stock insuffisant. Risque de rupture dans " +
+            daysRounded + " jour(s).";
 
     }
 
+    // RISQUE MOYEN : ORANGE
+    else if (days <= 7) {
+
+        result.classList.add("risk-orange");
+
+        result.textContent =
+            "Risque moyen. Rupture estimée dans " +
+            daysRounded + " jour(s).";
+
+    }
+
+    // FAIBLE RISQUE : VERT
     else {
 
-        result.classList.add("risk-low");
+        result.classList.add("risk-green");
 
-        riskTitle.textContent = "🟢 FAIBLE RISQUE";
-
-        message.textContent =
-            "Le stock est suffisant. Aucun réapprovisionnement urgent n'est nécessaire.";
+        result.textContent =
+            "Faible risque. Stock suffisant. Rupture estimée dans " +
+            daysRounded + " jour(s).";
 
     }
+
 }
 
 // Initialisation
@@ -401,14 +419,6 @@ displayProducts();
 
 </body>
 </html>
-
-
-
-
-
-   
-     
-
 
 
     
