@@ -5,63 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inveep Stock Alert</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <!-- ÉTAPE 1 : le style (vert et blanc) -->
   <style>
-    body   { font-family: Arial; background: #f0faf4; padding: 20px; }
-    h1, h2 { color: #1f9d55; }
-    .carte { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-    th, td { padding: 6px; text-align: left; }
-    button { background: #1f9d55; color: white; border: 0; padding: 10px 20px; border-radius: 8px; }
+    body    { font-family: Arial; background: #f0faf4; padding: 20px; }
+    h1, h2, h3 { color: #14532d; }
+    .carte  { background: white; padding: 15px; border-radius: 16px; margin-top: 20px; border-top: 5px solid #1f9d55; }
+    table   { width: 100%; border-collapse: collapse; font-size: 14px; }
+    td, th  { padding: 8px 3px; text-align: left; border-bottom: 1px solid #d5eadc; }
+    select, input { padding: 10px; width: 180px; border: 1px solid #b7d9c4; border-radius: 8px; }
+    button  { padding: 11px 22px; background: #1f9d55; color: white; border: 0; border-radius: 8px; }
+    #resultat { line-height: 2; }
+    .grand  { font-size: 44px; font-weight: bold; color: #14532d; }
+    .grand span { font-size: 16px; font-weight: normal; color: #555; }
+    .calc-jauge { height: 12px; background: #e3efe7; border-radius: 12px; margin: 8px 0; }
+    .calc-jauge span { display: block; height: 100%; border-radius: 12px; }
+    .badge  { padding: 4px 8px; border-radius: 12px; font-weight: bold; }
+    .faible { background: #dcfce7; color: #15803d; }
+    .moyen  { background: #fdf1d3; color: #f0a30a; }
+    .eleve  { background: #fde3e4; color: #e5484d; }
   </style>
 </head>
+
 <body>
-  <!-- Logo : mettez le fichier logo.png à côté de index.html -->
-  <img src="logo.png" height="60" alt="Inveep" onerror="this.outerHTML='<h1>inveep</h1>'">
-  <h2>Stock Alert</h2>
-
-  <div class="carte">
-    <table id="tableau">
-      <tr><th>Produit</th><th>Stock</th><th>Ventes/j</th><th>Jours</th><th>Rupture ?</th></tr>
-    </table>
-  </div>
-
-  <div class="carte">
-    Type de produit : <input id="produit" list="liste" placeholder="Choisir ou écrire"><br><br>
-    <datalist id="liste"></datalist>
-    Stock : <input id="stock" type="number" value="50"><br><br>
-    Ventes/jour : <input id="ventes" type="number" value="8"><br><br>
-    <button onclick="calculer()">Calculer</button>
-    <p id="resultat"></p>
-  </div>
-
-  <script>
-    // 1. La formule du modèle (donnée par modele.py)
-    function prevoir(stock, ventes) {
-      return Math.max(0, Math.round(0.116 * stock - 2.15 * ventes + 18.391));
-    }
-
-    // 2. Lire le fichier Excel et remplir le tableau + la liste
-    fetch("inveep.xlsx").then(r => r.arrayBuffer()).then(donnees => {
-      var fichier = XLSX.read(donnees, { type: "array" });
-      var lignes = XLSX.utils.sheet_to_json(fichier.Sheets[fichier.SheetNames[0]], { header: 1 });
-
-      for (var i = 1; i < lignes.length; i++) {
-        var nom = lignes[i][0], stock = lignes[i][1], ventes = lignes[i][2];
-        var jours = prevoir(stock, ventes);
-        var rupture = jours < 7 ? "Oui" : "Non";
-        document.getElementById("liste").innerHTML += "<option>" + nom + "</option>";
-        document.getElementById("tableau").innerHTML +=
-          "<tr><td>" + nom + "</td><td>" + stock + "</td><td>" + ventes + "</td><td>" + jours + "</td><td>" + rupture + "</td></tr>";
-      }
-    });
-
-    // 3. Le bouton Calculer
-    function calculer() {
-      var jours = prevoir(Number(stock.value), Number(ventes.value));
-      var couleur = jours < 7 ? "red" : "green";
-      var verdict = jours < 7 ? "Oui, rupture probable" : "Non, pas de rupture";
-      resultat.innerHTML = (produit.value || "Produit") + " : " + jours + " jours<br><b style='color:" + couleur + "'>Rupture ? " + verdict + "</b>";
-    }
-    calculer();
-  </script>
-</body>
-</html>
+  <!-- ÉTAPE 2 : le contenu de la page -->
+  <img src="logo.png" height="60" alt="Inveep"
+   
+   
