@@ -51,7 +51,6 @@ header {
     font-size: 28px;
     font-weight: bold;
     color: #155b32;
-    letter-spacing: 1px;
 }
 
 .sous-titre {
@@ -86,7 +85,7 @@ h1 {
     border-radius: 14px;
     padding: 22px;
     border-top: 5px solid #20a05a;
-    box-shadow: 0 4px 12px rgba(20, 90, 50, 0.07);
+    box-shadow: 0 4px 12px rgba(20,90,50,0.07);
 }
 
 h2 {
@@ -107,7 +106,6 @@ th {
     background: #e2f3e8;
     color: #155b32;
     padding: 12px 7px;
-    text-align: center;
 }
 
 td {
@@ -120,7 +118,7 @@ tbody tr:hover {
     background: #f4faf6;
 }
 
-/* FORMULAIRE */
+/* CHAMPS MODIFIABLES */
 label {
     display: block;
     margin-top: 14px;
@@ -131,19 +129,23 @@ label {
 }
 
 input, select {
+    display: block;
     width: 100%;
-    padding: 11px;
-    border: 1px solid #c9dfd0;
+    padding: 12px;
+    border: 1px solid #a9cfb5;
     border-radius: 7px;
-    background: white;
-    font-size: 13px;
+    background: #ffffff;
+    color: #234b35;
+    font-size: 14px;
     outline: none;
 }
 
 input:focus, select:focus {
-    border-color: #20a05a;
+    border: 2px solid #168346;
+    background: #f7fff9;
 }
 
+/* BOUTON */
 button {
     width: 100%;
     margin-top: 22px;
@@ -182,7 +184,7 @@ button:hover {
     color: #168346;
 }
 
-/* RESPONSIVE */
+/* PETITS ECRANS */
 @media (max-width: 650px) {
     body {
         padding: 18px;
@@ -190,10 +192,6 @@ button:hover {
 
     .contenu {
         flex-direction: column;
-    }
-
-    .carte {
-        width: 100%;
     }
 }
 </style>
@@ -203,7 +201,7 @@ button:hover {
 
 <div class="container">
 
-    <!-- LOGO IN VEEP -->
+    <!-- LOGO -->
     <header>
         <div class="logo">
             <svg viewBox="0 0 40 40" fill="none">
@@ -241,7 +239,6 @@ button:hover {
                         <th>Vente/j</th>
                     </tr>
                 </thead>
-
                 <tbody id="tableau"></tbody>
             </table>
         </div>
@@ -256,14 +253,26 @@ button:hover {
             </select>
 
             <label for="stock">Stock disponible :</label>
-            <input type="number" id="stock" min="0" step="any"
-                   placeholder="Saisir le stock">
+            <input
+                type="number"
+                id="stock"
+                min="0"
+                step="any"
+                placeholder="Saisir le stock disponible"
+            >
 
             <label for="ventes">Quantité vendue par jour :</label>
-            <input type="number" id="ventes" min="0" step="any"
-                   placeholder="Saisir la quantité vendue">
+            <input
+                type="number"
+                id="ventes"
+                min="0"
+                step="any"
+                placeholder="Cliquez ici pour saisir une valeur"
+            >
 
-            <button onclick="calculerStock()">Calculer</button>
+            <button type="button" onclick="calculerStock()">
+                Calculer
+            </button>
 
             <div id="resultat" aria-live="polite"></div>
         </div>
@@ -273,7 +282,7 @@ button:hover {
 
 <script>
 
-// DONNEES INITIALES DU FICHIER EXCEL
+// DONNEES INITIALES
 const produits = [
     { nom: "Café 250g", stock: 40, ventes: 4 },
     { nom: "Huile d'olive 1L", stock: 160, ventes: 24 },
@@ -284,8 +293,11 @@ const produits = [
 
 const tableau = document.getElementById("tableau");
 const liste = document.getElementById("produit");
+const champStock = document.getElementById("stock");
+const champVentes = document.getElementById("ventes");
+const resultat = document.getElementById("resultat");
 
-// AFFICHER LES PRODUITS
+// AFFICHER LE TABLEAU ET LES PRODUITS
 produits.forEach((p, index) => {
 
     tableau.innerHTML += `
@@ -301,37 +313,46 @@ produits.forEach((p, index) => {
     `;
 });
 
-// REMPLIR LES INFORMATIONS
+// REMPLIR LES CHAMPS
 function remplirDonnees() {
 
     const choix = liste.value;
-    const resultat = document.getElementById("resultat");
 
     resultat.style.display = "none";
 
     if (choix === "") {
-        document.getElementById("stock").value = "";
-        document.getElementById("ventes").value = "";
+        champStock.value = "";
+        champVentes.value = "";
         return;
     }
 
     const p = produits[Number(choix)];
 
-    document.getElementById("stock").value = p.stock;
-    document.getElementById("ventes").value = p.ventes;
+    champStock.value = p.stock;
+    champVentes.value = p.ventes;
 }
+
+// EFFACER L'ANCIEN RESULTAT LORS D'UNE MODIFICATION
+champStock.addEventListener("input", function() {
+    resultat.style.display = "none";
+});
+
+champVentes.addEventListener("input", function() {
+    resultat.style.display = "none";
+});
 
 // CALCULER LA RUPTURE DE STOCK
 function calculerStock() {
 
     const choix = liste.value;
-    const stockTexte = document.getElementById("stock").value;
-    const ventesTexte = document.getElementById("ventes").value;
-    const resultat = document.getElementById("resultat");
+    const stockTexte = champStock.value;
+    const ventesTexte = champVentes.value;
 
     resultat.style.display = "block";
 
-    if (choix === "" || stockTexte === "" || ventesTexte === "") {
+    if (choix === "" || stockTexte.trim() === "" ||
+        ventesTexte.trim() === "") {
+
         resultat.className = "alerte";
         resultat.textContent = "Veuillez remplir tous les champs.";
         return;
@@ -342,6 +363,7 @@ function calculerStock() {
 
     if (!Number.isFinite(stock) || !Number.isFinite(ventes) ||
         stock < 0 || ventes < 0) {
+
         resultat.className = "alerte";
         resultat.textContent = "Veuillez saisir des valeurs valides.";
         return;
@@ -355,7 +377,7 @@ function calculerStock() {
 
     if (ventes === 0) {
         resultat.className = "normal";
-        resultat.textContent = "Aucune vente : pas de rupture estimée.";
+        resultat.textContent = "Aucune vente enregistrée.";
         return;
     }
 
@@ -376,6 +398,7 @@ function calculerStock() {
 
 </body>
 </html>
+
 
 
 
