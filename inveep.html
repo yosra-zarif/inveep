@@ -2,271 +2,352 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inveep - Stock Alert</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inveep - Stock Alert</title>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 40px 7%;
-      font-family: Arial, sans-serif;
-      background: #eff9f3;
-      color: #111;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    h1, h2 {
-      color: #155b32;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 25px;
+            color: #333;
+        }
 
-    h1 {
-      font-size: 42px;
-    }
+        .container {
+            max-width: 950px;
+            margin: auto;
+        }
 
-    h2 {
-      font-size: 30px;
-    }
+        h1 {
+            text-align: center;
+            color: #263b55;
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
 
-    .carte {
-      background: white;
-      border-top: 10px solid #20a05a;
-      border-radius: 22px;
-      padding: 25px 30px;
-      margin: 25px 0;
-    }
+        .description {
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 18px;
-    }
+        /* Tableau et calculateur sur la même ligne */
+        .contenu {
+            display: flex;
+            gap: 20px;
+            align-items: stretch;
+        }
 
-    th, td {
-      text-align: left;
-      padding: 15px 10px;
-      border-bottom: 1px solid #cfe5d6;
-    }
+        .carte {
+            background-color: white;
+            padding: 18px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+            flex: 1;
+            min-width: 0;
+        }
 
-    label {
-      display: block;
-      margin-top: 22px;
-      font-size: 18px;
-    }
+        h2 {
+            color: #263b55;
+            font-size: 17px;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
 
-    input, select {
-      width: 100%;
-      max-width: 350px;
-      box-sizing: border-box;
-      padding: 14px;
-      margin-top: 7px;
-      font-size: 17px;
-      border: 1px solid #888;
-      border-radius: 5px;
-      background: white;
-    }
+        /* Tableau */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
 
-    button {
-      margin-top: 25px;
-      padding: 15px 30px;
-      background: #20a05a;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 18px;
-      cursor: pointer;
-    }
+        th {
+            background-color: #263b55;
+            color: white;
+            padding: 10px 6px;
+            text-align: center;
+        }
 
-    button:hover {
-      background: #187d45;
-    }
+        td {
+            padding: 10px 6px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
 
-    #resultat {
-      margin-top: 25px;
-      font-size: 19px;
-    }
+        tr:hover {
+            background-color: #f5f8fc;
+        }
 
-    .alerte {
-      color: red;
-      font-weight: bold;
-    }
+        /* Calculateur */
+        label {
+            display: block;
+            margin-top: 13px;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: bold;
+        }
 
-    .normal {
-      color: #168346;
-      font-weight: bold;
-    }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 13px;
+            background-color: white;
+        }
 
-    @media (max-width: 600px) {
-      body {
-        padding: 20px 5%;
-      }
+        input[readonly] {
+            background-color: #f1f3f5;
+        }
 
-      h1 {
-        font-size: 34px;
-      }
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 11px;
+            background-color: #263b55;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
 
-      .carte {
-        padding: 20px 15px;
-      }
+        button:hover {
+            background-color: #365675;
+        }
 
-      table {
-        font-size: 15px;
-      }
+        #resultat {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            display: none;
+        }
 
-      th, td {
-        padding: 12px 5px;
-      }
-    }
-  </style>
+        .alerte {
+            background-color: #ffe5e5;
+            color: #c62828;
+        }
+
+        .normal {
+            background-color: #e4f5e9;
+            color: #237a3b;
+        }
+
+        /* Adaptation aux petits écrans */
+        @media (max-width: 650px) {
+            body {
+                padding: 15px;
+            }
+
+            .contenu {
+                flex-direction: column;
+            }
+
+            .carte {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-  <h1>inveep</h1>
-  <h2>Stock Alert</h2>
+    <div class="container">
 
-  <!-- Tableau des produits -->
-  <div class="carte">
-    <table>
-      <thead>
-        <tr>
-          <th>Produit</th>
-          <th>Stock</th>
-          <th>Vente/j</th>
-        </tr>
-      </thead>
+        <h1>Inveep – Stock Alert</h1>
+        <p class="description">
+            Gestion et suivi des stocks de produits
+        </p>
 
-      <tbody id="tableauProduits"></tbody>
-    </table>
-  </div>
+        <div class="contenu">
 
-  <!-- Formulaire de calcul -->
-  <div class="carte">
+            <!-- Tableau des stocks -->
+            <div class="carte">
 
-    <label for="produit">Type de produit :</label>
-    <select id="produit" onchange="remplirChamps()"></select>
+                <h2>État des stocks</h2>
 
-    <label for="stock">Stock :</label>
-    <input type="number" id="stock" min="0">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Stock</th>
+                            <th>Vente/j</th>
+                        </tr>
+                    </thead>
 
-    <label for="ventes">Ventes par jour :</label>
-    <input type="number" id="ventes" min="0">
+                    <tbody id="tableau">
+                    </tbody>
+                </table>
 
-    <button onclick="calculer()">Calculer</button>
+            </div>
 
-    <div id="resultat"></div>
+            <!-- Calculateur -->
+            <div class="carte">
 
-  </div>
+                <h2>Calculateur de stock</h2>
 
-  <script>
+                <label for="produit">Choisir un produit :</label>
 
-    // Données du fichier Excel
-    const produits = [
-      { nom: "café:250g", stock: 40, ventes: 4 },
-      { nom: "Huile d'olive 1L", stock: 160, ventes: 24 },
-      { nom: "pates:500g", stock: 75, ventes: 16 },
-      { nom: "Lait 1L", stock: 30, ventes: 0 },
-      { nom: "Sucre 1kg", stock: 220, ventes: 27 }
-    ];
+                <select id="produit" onchange="remplirDonnees()">
+                    <option value="">-- Sélectionner --</option>
+                </select>
 
-    const tableau = document.getElementById("tableauProduits");
-    const liste = document.getElementById("produit");
+                <label for="stock">Stock disponible :</label>
+                <input type="number" id="stock" readonly>
 
-    // Afficher les produits dans le tableau
-    produits.forEach((p, index) => {
+                <label for="ventes">Ventes par jour :</label>
+                <input type="number" id="ventes" readonly>
 
-      tableau.innerHTML += `
-        <tr>
-          <td>${p.nom}</td>
-          <td>${p.stock}</td>
-          <td>${p.ventes}</td>
-        </tr>
-      `;
+                <button onclick="calculerStock()">Calculer</button>
 
-      liste.innerHTML += `
-        <option value="${index}">${p.nom}</option>
-      `;
+                <div id="resultat"></div>
 
-    });
+            </div>
 
-    // Remplir les champs automatiquement
-    function remplirChamps() {
+        </div>
+    </div>
 
-      const p = produits[Number(liste.value)];
+    <script>
 
-      document.getElementById("stock").value = p.stock;
-      document.getElementById("ventes").value = p.ventes;
+        // Données issues du tableau Excel
+        const produits = [
+            { nom: "Café 250g", stock: 40, ventes: 4 },
+            { nom: "Huile d'olive 1L", stock: 160, ventes: 24 },
+            { nom: "Pâtes 500g", stock: 75, ventes: 16 },
+            { nom: "Lait 1L", stock: 30, ventes: 0 },
+            { nom: "Sucre 1kg", stock: 220, ventes: 27 }
+        ];
 
-      document.getElementById("resultat").innerHTML = "";
+        // Afficher les produits dans le tableau et la liste
+        function afficherProduits() {
 
-    }
+            const tableau = document.getElementById("tableau");
+            const liste = document.getElementById("produit");
 
-    // Calculer les jours avant la rupture
-    function calculer() {
+            produits.forEach((p, index) => {
 
-      const nom = produits[Number(liste.value)].nom;
+                // Ajouter une ligne au tableau
+                const ligne = document.createElement("tr");
 
-      const stockTexte = document.getElementById("stock").value;
-      const ventesTexte = document.getElementById("ventes").value;
+                ligne.innerHTML = `
+                    <td>${p.nom}</td>
+                    <td>${p.stock}</td>
+                    <td>${p.ventes}</td>
+                `;
 
-      const stock = Number(stockTexte);
-      const ventes = Number(ventesTexte);
+                tableau.appendChild(ligne);
 
-      const resultat = document.getElementById("resultat");
+                // Ajouter le produit dans la liste
+                const option = document.createElement("option");
 
-      if (
-        stockTexte === "" ||
-        ventesTexte === "" ||
-        !Number.isFinite(stock) ||
-        !Number.isFinite(ventes) ||
-        stock < 0 ||
-        ventes < 0
-      ) {
+                option.value = index;
+                option.textContent = p.nom;
 
-        resultat.innerHTML =
-          '<span class="alerte">Veuillez saisir des valeurs valides.</span>';
+                liste.appendChild(option);
 
-        return;
-      }
+            });
+        }
 
-      if (stock === 0) {
+        // Remplir automatiquement les informations
+        function remplirDonnees() {
 
-        resultat.innerHTML = `
-          <b>${nom} :</b> stock déjà épuisé.<br>
-          <span class="alerte">Rupture de stock !</span>
-        `;
+            const choix = document.getElementById("produit").value;
+            const resultat = document.getElementById("resultat");
 
-      } else if (ventes === 0) {
+            resultat.style.display = "none";
 
-        resultat.innerHTML = `
-          <b>${nom} :</b>
-          Aucune vente journalière.
-          Le nombre de jours avant rupture ne peut pas être calculé.
-        `;
+            if (choix === "") {
+                document.getElementById("stock").value = "";
+                document.getElementById("ventes").value = "";
+                return;
+            }
 
-      } else {
+            const produit = produits[choix];
 
-        const jours = Math.ceil(stock / ventes);
+            document.getElementById("stock").value = produit.stock;
+            document.getElementById("ventes").value = produit.ventes;
+        }
 
-        let message = jours <= 3
-          ? '<span class="alerte">Rupture probable !</span>'
-          : '<span class="normal">Stock suffisant pour le moment.</span>';
+        // Calculer le nombre de jours avant la rupture du stock
+        function calculerStock() {
 
-        resultat.innerHTML = `
-          <b>${nom} :</b>
-          Environ ${jours} jour(s) avant rupture.<br>
-          ${message}
-        `;
+            const choix = document.getElementById("produit").value;
+            const stock = Number(document.getElementById("stock").value);
+            const ventes = Number(document.getElementById("ventes").value);
+            const resultat = document.getElementById("resultat");
 
-      }
+            resultat.style.display = "block";
+            resultat.className = "";
 
-    }
+            if (choix === "") {
+                resultat.textContent = "Veuillez sélectionner un produit.";
+                resultat.classList.add("alerte");
+                return;
+            }
 
-    // Afficher le premier produit au démarrage
-    remplirChamps();
+            if (stock < 0 || ventes < 0) {
+                resultat.textContent = "Les valeurs doivent être positives.";
+                resultat.classList.add("alerte");
+                return;
+            }
 
-  </script>
+            if (stock === 0) {
+                resultat.textContent = "Attention ! Le stock est épuisé.";
+                resultat.classList.add("alerte");
+                return;
+            }
+
+            if (ventes === 0) {
+                resultat.textContent = "Aucune vente enregistrée pour ce produit.";
+                resultat.classList.add("normal");
+                return;
+            }
+
+            const jours = Math.ceil(stock / ventes);
+
+            if (jours <= 3) {
+                resultat.textContent =
+                    "⚠️ Alerte ! Rupture de stock dans " + jours + " jour(s).";
+
+                resultat.classList.add("alerte");
+            } else {
+                resultat.textContent =
+                    "Stock suffisant. Rupture estimée dans " + jours + " jours.";
+
+                resultat.classList.add("normal");
+            }
+        }
+
+        // Lancer l'affichage au chargement de la page
+        afficherProduits();
+
+    </script>
 
 </body>
 </html>
+
+
+    
+    
+    
+      
+
+
+      
+
+
+        
+
+
 
      
