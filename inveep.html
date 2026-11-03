@@ -24,7 +24,7 @@ body {
     margin: auto;
 }
 
-/* En-tête et logo */
+/* LOGO */
 header {
     display: flex;
     align-items: center;
@@ -72,7 +72,7 @@ h1 {
     margin-bottom: 25px;
 }
 
-/* Organisation des deux cartes */
+/* CARTES */
 .contenu {
     display: flex;
     gap: 20px;
@@ -96,7 +96,7 @@ h2 {
     margin-bottom: 18px;
 }
 
-/* Tableau */
+/* TABLEAU */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -120,7 +120,7 @@ tbody tr:hover {
     background: #f4faf6;
 }
 
-/* Formulaire */
+/* FORMULAIRE */
 label {
     display: block;
     margin-top: 14px;
@@ -144,11 +144,6 @@ input:focus, select:focus {
     border-color: #20a05a;
 }
 
-input[readonly] {
-    background: #f3f8f4;
-    color: #45634e;
-}
-
 button {
     width: 100%;
     margin-top: 22px;
@@ -166,7 +161,7 @@ button:hover {
     background: #116b39;
 }
 
-/* Résultat */
+/* RESULTAT */
 #resultat {
     display: none;
     margin-top: 16px;
@@ -178,18 +173,16 @@ button:hover {
 }
 
 .alerte {
-    display: block;
     background: #fff0ed;
     color: #c0392b;
 }
 
 .normal {
-    display: block;
     background: #e6f5eb;
     color: #168346;
 }
 
-/* Téléphone et petits écrans */
+/* RESPONSIVE */
 @media (max-width: 650px) {
     body {
         padding: 18px;
@@ -210,14 +203,15 @@ button:hover {
 
 <div class="container">
 
-    <!-- Logo Inveep -->
+    <!-- LOGO IN VEEP -->
     <header>
         <div class="logo">
             <svg viewBox="0 0 40 40" fill="none">
                 <path d="M8 23C8 12 19 7 32 8C31 21 25 32 14 32C9 32 6 28 8 23Z"
                       fill="white"/>
                 <path d="M9 31C15 23 21 18 29 13"
-                      stroke="#168346" stroke-width="2.5"
+                      stroke="#168346"
+                      stroke-width="2.5"
                       stroke-linecap="round"/>
             </svg>
         </div>
@@ -235,9 +229,8 @@ button:hover {
 
     <div class="contenu">
 
-        <!-- Tableau des produits -->
+        <!-- TABLEAU -->
         <div class="carte">
-
             <h2>État des stocks</h2>
 
             <table>
@@ -251,12 +244,10 @@ button:hover {
 
                 <tbody id="tableau"></tbody>
             </table>
-
         </div>
 
-        <!-- Calculateur -->
+        <!-- CALCULATEUR -->
         <div class="carte">
-
             <h2>Calculateur de stock</h2>
 
             <label for="produit">Type de produit :</label>
@@ -265,15 +256,16 @@ button:hover {
             </select>
 
             <label for="stock">Stock disponible :</label>
-            <input type="number" id="stock" readonly>
+            <input type="number" id="stock" min="0" step="any"
+                   placeholder="Saisir le stock">
 
-            <label for="ventes">Ventes par jour :</label>
-            <input type="number" id="ventes" readonly>
+            <label for="ventes">Quantité vendue par jour :</label>
+            <input type="number" id="ventes" min="0" step="any"
+                   placeholder="Saisir la quantité vendue">
 
             <button onclick="calculerStock()">Calculer</button>
 
-            <div id="resultat"></div>
-
+            <div id="resultat" aria-live="polite"></div>
         </div>
 
     </div>
@@ -281,7 +273,7 @@ button:hover {
 
 <script>
 
-// Données du fichier Excel
+// DONNEES INITIALES DU FICHIER EXCEL
 const produits = [
     { nom: "Café 250g", stock: 40, ventes: 4 },
     { nom: "Huile d'olive 1L", stock: 160, ventes: 24 },
@@ -290,10 +282,10 @@ const produits = [
     { nom: "Sucre 1kg", stock: 220, ventes: 27 }
 ];
 
-// Afficher les produits dans le tableau et la liste
 const tableau = document.getElementById("tableau");
 const liste = document.getElementById("produit");
 
+// AFFICHER LES PRODUITS
 produits.forEach((p, index) => {
 
     tableau.innerHTML += `
@@ -309,7 +301,7 @@ produits.forEach((p, index) => {
     `;
 });
 
-// Remplir automatiquement les informations
+// REMPLIR LES INFORMATIONS
 function remplirDonnees() {
 
     const choix = liste.value;
@@ -329,23 +321,31 @@ function remplirDonnees() {
     document.getElementById("ventes").value = p.ventes;
 }
 
-// Calculer les jours avant la rupture
+// CALCULER LA RUPTURE DE STOCK
 function calculerStock() {
 
     const choix = liste.value;
+    const stockTexte = document.getElementById("stock").value;
+    const ventesTexte = document.getElementById("ventes").value;
     const resultat = document.getElementById("resultat");
 
     resultat.style.display = "block";
 
-    if (choix === "") {
+    if (choix === "" || stockTexte === "" || ventesTexte === "") {
         resultat.className = "alerte";
-        resultat.textContent = "Veuillez choisir un produit.";
+        resultat.textContent = "Veuillez remplir tous les champs.";
         return;
     }
 
-    const p = produits[Number(choix)];
-    const stock = p.stock;
-    const ventes = p.ventes;
+    const stock = Number(stockTexte);
+    const ventes = Number(ventesTexte);
+
+    if (!Number.isFinite(stock) || !Number.isFinite(ventes) ||
+        stock < 0 || ventes < 0) {
+        resultat.className = "alerte";
+        resultat.textContent = "Veuillez saisir des valeurs valides.";
+        return;
+    }
 
     if (stock === 0) {
         resultat.className = "alerte";
@@ -355,7 +355,7 @@ function calculerStock() {
 
     if (ventes === 0) {
         resultat.className = "normal";
-        resultat.textContent = "Aucune vente enregistrée pour ce produit.";
+        resultat.textContent = "Aucune vente : pas de rupture estimée.";
         return;
     }
 
@@ -364,7 +364,7 @@ function calculerStock() {
     if (jours <= 3) {
         resultat.className = "alerte";
         resultat.textContent =
-            "Alerte ! Rupture de stock estimée dans " + jours + " jour(s).";
+            "Alerte ! Rupture estimée dans " + jours + " jour(s).";
     } else {
         resultat.className = "normal";
         resultat.textContent =
@@ -376,6 +376,10 @@ function calculerStock() {
 
 </body>
 </html>
+
+
+   
+     
 
 
 
