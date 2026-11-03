@@ -2,339 +2,381 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inveep - Stock Alert</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inveep - Stock Alert</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+* {
+    box-sizing: border-box;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 25px;
-            color: #333;
-        }
+body {
+    margin: 0;
+    padding: 30px;
+    font-family: Arial, sans-serif;
+    background: #eff9f3;
+    color: #234b35;
+}
 
-        .container {
-            max-width: 950px;
-            margin: auto;
-        }
+.container {
+    max-width: 1000px;
+    margin: auto;
+}
 
-        h1 {
-            text-align: center;
-            color: #263b55;
-            font-size: 27px;
-            margin-bottom: 8px;
-        }
+/* En-tête et logo */
+header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
 
-        .description {
-            text-align: center;
-            color: #777;
-            font-size: 13px;
-            margin-bottom: 25px;
-        }
+.logo {
+    width: 48px;
+    height: 48px;
+    background: #168346;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        /* Tableau et calculateur sur la même ligne */
-        .contenu {
-            display: flex;
-            gap: 20px;
-            align-items: stretch;
-        }
+.logo svg {
+    width: 30px;
+    height: 30px;
+}
 
-        .carte {
-            background-color: white;
-            padding: 18px;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.07);
-            flex: 1;
-            min-width: 0;
-        }
+.nom-logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #155b32;
+    letter-spacing: 1px;
+}
 
-        h2 {
-            color: #263b55;
-            font-size: 17px;
-            margin-top: 0;
-            margin-bottom: 15px;
-        }
+.sous-titre {
+    color: #64816d;
+    font-size: 12px;
+    margin-top: 3px;
+}
 
-        /* Tableau */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
+h1 {
+    color: #155b32;
+    font-size: 25px;
+    margin-bottom: 5px;
+}
 
-        th {
-            background-color: #263b55;
-            color: white;
-            padding: 10px 6px;
-            text-align: center;
-        }
+.description {
+    color: #789080;
+    font-size: 13px;
+    margin-bottom: 25px;
+}
 
-        td {
-            padding: 10px 6px;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-        }
+/* Organisation des deux cartes */
+.contenu {
+    display: flex;
+    gap: 20px;
+    align-items: stretch;
+}
 
-        tr:hover {
-            background-color: #f5f8fc;
-        }
+.carte {
+    flex: 1;
+    min-width: 0;
+    background: white;
+    border-radius: 14px;
+    padding: 22px;
+    border-top: 5px solid #20a05a;
+    box-shadow: 0 4px 12px rgba(20, 90, 50, 0.07);
+}
 
-        /* Calculateur */
-        label {
-            display: block;
-            margin-top: 13px;
-            margin-bottom: 6px;
-            font-size: 13px;
-            font-weight: bold;
-        }
+h2 {
+    font-size: 17px;
+    color: #155b32;
+    margin-top: 0;
+    margin-bottom: 18px;
+}
 
-        select, input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 13px;
-            background-color: white;
-        }
+/* Tableau */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
 
-        input[readonly] {
-            background-color: #f1f3f5;
-        }
+th {
+    background: #e2f3e8;
+    color: #155b32;
+    padding: 12px 7px;
+    text-align: center;
+}
 
-        button {
-            width: 100%;
-            margin-top: 20px;
-            padding: 11px;
-            background-color: #263b55;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-        }
+td {
+    padding: 12px 7px;
+    text-align: center;
+    border-bottom: 1px solid #e3eee6;
+}
 
-        button:hover {
-            background-color: #365675;
-        }
+tbody tr:hover {
+    background: #f4faf6;
+}
 
-        #resultat {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 13px;
-            font-weight: bold;
-            display: none;
-        }
+/* Formulaire */
+label {
+    display: block;
+    margin-top: 14px;
+    margin-bottom: 7px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #315c40;
+}
 
-        .alerte {
-            background-color: #ffe5e5;
-            color: #c62828;
-        }
+input, select {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #c9dfd0;
+    border-radius: 7px;
+    background: white;
+    font-size: 13px;
+    outline: none;
+}
 
-        .normal {
-            background-color: #e4f5e9;
-            color: #237a3b;
-        }
+input:focus, select:focus {
+    border-color: #20a05a;
+}
 
-        /* Adaptation aux petits écrans */
-        @media (max-width: 650px) {
-            body {
-                padding: 15px;
-            }
+input[readonly] {
+    background: #f3f8f4;
+    color: #45634e;
+}
 
-            .contenu {
-                flex-direction: column;
-            }
+button {
+    width: 100%;
+    margin-top: 22px;
+    padding: 12px;
+    background: #168346;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-            .carte {
-                width: 100%;
-            }
-        }
-    </style>
+button:hover {
+    background: #116b39;
+}
+
+/* Résultat */
+#resultat {
+    display: none;
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: 7px;
+    font-size: 13px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.alerte {
+    display: block;
+    background: #fff0ed;
+    color: #c0392b;
+}
+
+.normal {
+    display: block;
+    background: #e6f5eb;
+    color: #168346;
+}
+
+/* Téléphone et petits écrans */
+@media (max-width: 650px) {
+    body {
+        padding: 18px;
+    }
+
+    .contenu {
+        flex-direction: column;
+    }
+
+    .carte {
+        width: 100%;
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <h1>Inveep – Stock Alert</h1>
-        <p class="description">
-            Gestion et suivi des stocks de produits
-        </p>
+    <!-- Logo Inveep -->
+    <header>
+        <div class="logo">
+            <svg viewBox="0 0 40 40" fill="none">
+                <path d="M8 23C8 12 19 7 32 8C31 21 25 32 14 32C9 32 6 28 8 23Z"
+                      fill="white"/>
+                <path d="M9 31C15 23 21 18 29 13"
+                      stroke="#168346" stroke-width="2.5"
+                      stroke-linecap="round"/>
+            </svg>
+        </div>
 
-        <div class="contenu">
+        <div>
+            <div class="nom-logo">inveep</div>
+            <div class="sous-titre">SMART STOCK MANAGEMENT</div>
+        </div>
+    </header>
 
-            <!-- Tableau des stocks -->
-            <div class="carte">
+    <h1>Stock Alert</h1>
+    <p class="description">
+        Suivi des stocks et prévision des ruptures
+    </p>
 
-                <h2>État des stocks</h2>
+    <div class="contenu">
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Produit</th>
-                            <th>Stock</th>
-                            <th>Vente/j</th>
-                        </tr>
-                    </thead>
+        <!-- Tableau des produits -->
+        <div class="carte">
 
-                    <tbody id="tableau">
-                    </tbody>
-                </table>
+            <h2>État des stocks</h2>
 
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Stock</th>
+                        <th>Vente/j</th>
+                    </tr>
+                </thead>
 
-            <!-- Calculateur -->
-            <div class="carte">
-
-                <h2>Calculateur de stock</h2>
-
-                <label for="produit">Choisir un produit :</label>
-
-                <select id="produit" onchange="remplirDonnees()">
-                    <option value="">-- Sélectionner --</option>
-                </select>
-
-                <label for="stock">Stock disponible :</label>
-                <input type="number" id="stock" readonly>
-
-                <label for="ventes">Ventes par jour :</label>
-                <input type="number" id="ventes" readonly>
-
-                <button onclick="calculerStock()">Calculer</button>
-
-                <div id="resultat"></div>
-
-            </div>
+                <tbody id="tableau"></tbody>
+            </table>
 
         </div>
+
+        <!-- Calculateur -->
+        <div class="carte">
+
+            <h2>Calculateur de stock</h2>
+
+            <label for="produit">Type de produit :</label>
+            <select id="produit" onchange="remplirDonnees()">
+                <option value="">Choisir un produit</option>
+            </select>
+
+            <label for="stock">Stock disponible :</label>
+            <input type="number" id="stock" readonly>
+
+            <label for="ventes">Ventes par jour :</label>
+            <input type="number" id="ventes" readonly>
+
+            <button onclick="calculerStock()">Calculer</button>
+
+            <div id="resultat"></div>
+
+        </div>
+
     </div>
+</div>
 
-    <script>
+<script>
 
-        // Données issues du tableau Excel
-        const produits = [
-            { nom: "Café 250g", stock: 40, ventes: 4 },
-            { nom: "Huile d'olive 1L", stock: 160, ventes: 24 },
-            { nom: "Pâtes 500g", stock: 75, ventes: 16 },
-            { nom: "Lait 1L", stock: 30, ventes: 0 },
-            { nom: "Sucre 1kg", stock: 220, ventes: 27 }
-        ];
+// Données du fichier Excel
+const produits = [
+    { nom: "Café 250g", stock: 40, ventes: 4 },
+    { nom: "Huile d'olive 1L", stock: 160, ventes: 24 },
+    { nom: "Pâtes 500g", stock: 75, ventes: 16 },
+    { nom: "Lait 1L", stock: 30, ventes: 0 },
+    { nom: "Sucre 1kg", stock: 220, ventes: 27 }
+];
 
-        // Afficher les produits dans le tableau et la liste
-        function afficherProduits() {
+// Afficher les produits dans le tableau et la liste
+const tableau = document.getElementById("tableau");
+const liste = document.getElementById("produit");
 
-            const tableau = document.getElementById("tableau");
-            const liste = document.getElementById("produit");
+produits.forEach((p, index) => {
 
-            produits.forEach((p, index) => {
+    tableau.innerHTML += `
+        <tr>
+            <td>${p.nom}</td>
+            <td>${p.stock}</td>
+            <td>${p.ventes}</td>
+        </tr>
+    `;
 
-                // Ajouter une ligne au tableau
-                const ligne = document.createElement("tr");
+    liste.innerHTML += `
+        <option value="${index}">${p.nom}</option>
+    `;
+});
 
-                ligne.innerHTML = `
-                    <td>${p.nom}</td>
-                    <td>${p.stock}</td>
-                    <td>${p.ventes}</td>
-                `;
+// Remplir automatiquement les informations
+function remplirDonnees() {
 
-                tableau.appendChild(ligne);
+    const choix = liste.value;
+    const resultat = document.getElementById("resultat");
 
-                // Ajouter le produit dans la liste
-                const option = document.createElement("option");
+    resultat.style.display = "none";
 
-                option.value = index;
-                option.textContent = p.nom;
+    if (choix === "") {
+        document.getElementById("stock").value = "";
+        document.getElementById("ventes").value = "";
+        return;
+    }
 
-                liste.appendChild(option);
+    const p = produits[Number(choix)];
 
-            });
-        }
+    document.getElementById("stock").value = p.stock;
+    document.getElementById("ventes").value = p.ventes;
+}
 
-        // Remplir automatiquement les informations
-        function remplirDonnees() {
+// Calculer les jours avant la rupture
+function calculerStock() {
 
-            const choix = document.getElementById("produit").value;
-            const resultat = document.getElementById("resultat");
+    const choix = liste.value;
+    const resultat = document.getElementById("resultat");
 
-            resultat.style.display = "none";
+    resultat.style.display = "block";
 
-            if (choix === "") {
-                document.getElementById("stock").value = "";
-                document.getElementById("ventes").value = "";
-                return;
-            }
+    if (choix === "") {
+        resultat.className = "alerte";
+        resultat.textContent = "Veuillez choisir un produit.";
+        return;
+    }
 
-            const produit = produits[choix];
+    const p = produits[Number(choix)];
+    const stock = p.stock;
+    const ventes = p.ventes;
 
-            document.getElementById("stock").value = produit.stock;
-            document.getElementById("ventes").value = produit.ventes;
-        }
+    if (stock === 0) {
+        resultat.className = "alerte";
+        resultat.textContent = "Attention ! Le stock est épuisé.";
+        return;
+    }
 
-        // Calculer le nombre de jours avant la rupture du stock
-        function calculerStock() {
+    if (ventes === 0) {
+        resultat.className = "normal";
+        resultat.textContent = "Aucune vente enregistrée pour ce produit.";
+        return;
+    }
 
-            const choix = document.getElementById("produit").value;
-            const stock = Number(document.getElementById("stock").value);
-            const ventes = Number(document.getElementById("ventes").value);
-            const resultat = document.getElementById("resultat");
+    const jours = Math.ceil(stock / ventes);
 
-            resultat.style.display = "block";
-            resultat.className = "";
+    if (jours <= 3) {
+        resultat.className = "alerte";
+        resultat.textContent =
+            "Alerte ! Rupture de stock estimée dans " + jours + " jour(s).";
+    } else {
+        resultat.className = "normal";
+        resultat.textContent =
+            "Stock suffisant. Rupture estimée dans " + jours + " jours.";
+    }
+}
 
-            if (choix === "") {
-                resultat.textContent = "Veuillez sélectionner un produit.";
-                resultat.classList.add("alerte");
-                return;
-            }
-
-            if (stock < 0 || ventes < 0) {
-                resultat.textContent = "Les valeurs doivent être positives.";
-                resultat.classList.add("alerte");
-                return;
-            }
-
-            if (stock === 0) {
-                resultat.textContent = "Attention ! Le stock est épuisé.";
-                resultat.classList.add("alerte");
-                return;
-            }
-
-            if (ventes === 0) {
-                resultat.textContent = "Aucune vente enregistrée pour ce produit.";
-                resultat.classList.add("normal");
-                return;
-            }
-
-            const jours = Math.ceil(stock / ventes);
-
-            if (jours <= 3) {
-                resultat.textContent =
-                    "⚠️ Alerte ! Rupture de stock dans " + jours + " jour(s).";
-
-                resultat.classList.add("alerte");
-            } else {
-                resultat.textContent =
-                    "Stock suffisant. Rupture estimée dans " + jours + " jours.";
-
-                resultat.classList.add("normal");
-            }
-        }
-
-        // Lancer l'affichage au chargement de la page
-        afficherProduits();
-
-    </script>
+</script>
 
 </body>
 </html>
+
 
 
     
