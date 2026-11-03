@@ -1,111 +1,272 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Inveep Stock Alert</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inveep - Stock Alert</title>
 
-  <!-- ÉTAPE 1 : le style (vert et blanc) -->
   <style>
-    body    { font-family: Arial; background: #f0faf4; padding: 20px; }
-    h1, h2, h3 { color: #14532d; }
-    .carte  { background: white; padding: 15px; border-radius: 16px; margin-top: 20px; border-top: 5px solid #1f9d55; }
-    table   { width: 100%; border-collapse: collapse; font-size: 14px; }
-    td, th  { padding: 8px 3px; text-align: left; border-bottom: 1px solid #d5eadc; }
-    select, input { padding: 10px; width: 180px; border: 1px solid #b7d9c4; border-radius: 8px; }
-    button  { padding: 11px 22px; background: #1f9d55; color: white; border: 0; border-radius: 8px; }
-    #resultat { line-height: 2; }
-    .grand  { font-size: 44px; font-weight: bold; color: #14532d; }
-    .grand span { font-size: 16px; font-weight: normal; color: #555; }
-    .calc-jauge { height: 12px; background: #e3efe7; border-radius: 12px; margin: 8px 0; }
-    .calc-jauge span { display: block; height: 100%; border-radius: 12px; }
-    .badge  { padding: 4px 8px; border-radius: 12px; font-weight: bold; }
-    .faible { background: #dcfce7; color: #15803d; }
-    .moyen  { background: #fdf1d3; color: #f0a30a; }
-    .eleve  { background: #fde3e4; color: #e5484d; }
+    body {
+      margin: 0;
+      padding: 40px 7%;
+      font-family: Arial, sans-serif;
+      background: #eff9f3;
+      color: #111;
+    }
+
+    h1, h2 {
+      color: #155b32;
+    }
+
+    h1 {
+      font-size: 42px;
+    }
+
+    h2 {
+      font-size: 30px;
+    }
+
+    .carte {
+      background: white;
+      border-top: 10px solid #20a05a;
+      border-radius: 22px;
+      padding: 25px 30px;
+      margin: 25px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 18px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 15px 10px;
+      border-bottom: 1px solid #cfe5d6;
+    }
+
+    label {
+      display: block;
+      margin-top: 22px;
+      font-size: 18px;
+    }
+
+    input, select {
+      width: 100%;
+      max-width: 350px;
+      box-sizing: border-box;
+      padding: 14px;
+      margin-top: 7px;
+      font-size: 17px;
+      border: 1px solid #888;
+      border-radius: 5px;
+      background: white;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 15px 30px;
+      background: #20a05a;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #187d45;
+    }
+
+    #resultat {
+      margin-top: 25px;
+      font-size: 19px;
+    }
+
+    .alerte {
+      color: red;
+      font-weight: bold;
+    }
+
+    .normal {
+      color: #168346;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 20px 5%;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+
+      .carte {
+        padding: 20px 15px;
+      }
+
+      table {
+        font-size: 15px;
+      }
+
+      th, td {
+        padding: 12px 5px;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <!-- ÉTAPE 2 : le contenu de la page -->
-  <img src="logo.png" height="60" alt="Inveep" onerror="this.outerHTML='<h1>inveep</h1>'">
-  <h2>Stock Alert</h2>
-  <p>Prévoyez la rupture de stock avant qu'elle n'arrive.</p>
 
+  <h1>inveep</h1>
+  <h2>Stock Alert</h2>
+
+  <!-- Tableau des produits -->
   <div class="carte">
-    <h3>Tableau des produits</h3>
-    <table id="tableau"></table>
+    <table>
+      <thead>
+        <tr>
+          <th>Produit</th>
+          <th>Stock</th>
+          <th>Vente/j</th>
+        </tr>
+      </thead>
+
+      <tbody id="tableauProduits"></tbody>
+    </table>
   </div>
 
+  <!-- Formulaire de calcul -->
   <div class="carte">
-    <h3>Calculer une prévision</h3>
-    Type de produit<br>
-    <select id="produit"></select><br><br>
-    Stock actuel<br>
-    <input id="stock" type="number" value="50"><br><br>
-    Ventes par jour<br>
-    <input id="ventes" type="number" value="8"><br><br>
+
+    <label for="produit">Type de produit :</label>
+    <select id="produit" onchange="remplirChamps()"></select>
+
+    <label for="stock">Stock :</label>
+    <input type="number" id="stock" min="0">
+
+    <label for="ventes">Ventes par jour :</label>
+    <input type="number" id="ventes" min="0">
+
     <button onclick="calculer()">Calculer</button>
-    <p id="resultat"></p>
+
+    <div id="resultat"></div>
+
   </div>
 
   <script>
-    // ÉTAPE 3 : la formule du modèle (donnée par modele.py)
-    function prevoir(stock, ventes) {
-      var jours = 0.116 * stock - 2.15 * ventes + 18.391;
-      if (jours < 0) { jours = 0; }
-      return Math.round(jours);
+
+    // Données du fichier Excel
+    const produits = [
+      { nom: "café:250g", stock: 40, ventes: 4 },
+      { nom: "Huile d'olive 1L", stock: 160, ventes: 24 },
+      { nom: "pates:500g", stock: 75, ventes: 16 },
+      { nom: "Lait 1L", stock: 30, ventes: 0 },
+      { nom: "Sucre 1kg", stock: 220, ventes: 27 }
+    ];
+
+    const tableau = document.getElementById("tableauProduits");
+    const liste = document.getElementById("produit");
+
+    // Afficher les produits dans le tableau
+    produits.forEach((p, index) => {
+
+      tableau.innerHTML += `
+        <tr>
+          <td>${p.nom}</td>
+          <td>${p.stock}</td>
+          <td>${p.ventes}</td>
+        </tr>
+      `;
+
+      liste.innerHTML += `
+        <option value="${index}">${p.nom}</option>
+      `;
+
+    });
+
+    // Remplir les champs automatiquement
+    function remplirChamps() {
+
+      const p = produits[Number(liste.value)];
+
+      document.getElementById("stock").value = p.stock;
+      document.getElementById("ventes").value = p.ventes;
+
+      document.getElementById("resultat").innerHTML = "";
+
     }
 
-    // ÉTAPE 4 : le niveau de risque
-    function risque(jours) {
-      if (jours < 7)   { return "eleve"; }
-      if (jours <= 15) { return "moyen"; }
-      return "faible";
-    }
-    var noms = { eleve: "Élevé", moyen: "Moyen", faible: "Faible" };
-    var couleurs = { eleve: "#e5484d", moyen: "#f0a30a", faible: "#1f9d55" };
-
-    // ÉTAPE 5 : lire le fichier Excel et afficher le tableau exactement comme dans Excel
-    fetch("inveep.xlsx")
-      .then(function (reponse) { return reponse.arrayBuffer(); })
-      .then(function (donnees) {
-        var fichier = XLSX.read(donnees, { type: "array" });
-        var lignes = XLSX.utils.sheet_to_json(fichier.Sheets[fichier.SheetNames[0]], { header: 1 });
-
-        // la 1re ligne = les titres (Produit, stock, vente/j)
-        var html = "<tr><th>" + String(lignes[0][0]).trim() + "</th><th>" + lignes[0][1] + "</th><th>" + lignes[0][2] + "</th></tr>";
-
-        // les autres lignes = les produits
-        for (var i = 1; i < lignes.length; i++) {
-          html += "<tr><td>" + lignes[i][0] + "</td><td>" + lignes[i][1] + "</td><td>" + lignes[i][2] + "</td></tr>";
-          document.getElementById("produit").innerHTML += "<option>" + lignes[i][0] + "</option>";
-        }
-        document.getElementById("tableau").innerHTML = html;
-      });
-
-    // ÉTAPE 6 : le bouton Calculer
+    // Calculer les jours avant la rupture
     function calculer() {
-      var jours = prevoir(Number(stock.value), Number(ventes.value));
-      var r = risque(jours);
-      var verdict = "Non, pas de rupture prévue";
-      if (r == "eleve") { verdict = "Oui, rupture probable !"; }
-      if (r == "moyen") { verdict = "Pas encore, à surveiller"; }
 
-      var largeur = Math.min(100, Math.round(jours / 30 * 100));
+      const nom = produits[Number(liste.value)].nom;
 
-      resultat.innerHTML =
-        "<b>" + produit.value + "</b>" +
-        "<div class='grand'>" + jours + " <span>jours avant rupture</span></div>" +
-        "<div class='calc-jauge'><span style='width:" + largeur + "%; background:" + couleurs[r] + "'></span></div>" +
-        "Rupture ? <b>" + verdict + "</b><br>" +
-        "<span class='badge " + r + "'>Risque " + noms[r].toLowerCase() + "</span>";
+      const stockTexte = document.getElementById("stock").value;
+      const ventesTexte = document.getElementById("ventes").value;
+
+      const stock = Number(stockTexte);
+      const ventes = Number(ventesTexte);
+
+      const resultat = document.getElementById("resultat");
+
+      if (
+        stockTexte === "" ||
+        ventesTexte === "" ||
+        !Number.isFinite(stock) ||
+        !Number.isFinite(ventes) ||
+        stock < 0 ||
+        ventes < 0
+      ) {
+
+        resultat.innerHTML =
+          '<span class="alerte">Veuillez saisir des valeurs valides.</span>';
+
+        return;
+      }
+
+      if (stock === 0) {
+
+        resultat.innerHTML = `
+          <b>${nom} :</b> stock déjà épuisé.<br>
+          <span class="alerte">Rupture de stock !</span>
+        `;
+
+      } else if (ventes === 0) {
+
+        resultat.innerHTML = `
+          <b>${nom} :</b>
+          Aucune vente journalière.
+          Le nombre de jours avant rupture ne peut pas être calculé.
+        `;
+
+      } else {
+
+        const jours = Math.ceil(stock / ventes);
+
+        let message = jours <= 3
+          ? '<span class="alerte">Rupture probable !</span>'
+          : '<span class="normal">Stock suffisant pour le moment.</span>';
+
+        resultat.innerHTML = `
+          <b>${nom} :</b>
+          Environ ${jours} jour(s) avant rupture.<br>
+          ${message}
+        `;
+
+      }
+
     }
-    calculer();
+
+    // Afficher le premier produit au démarrage
+    remplirChamps();
+
   </script>
+
 </body>
 </html>
- 
-   
-   
+
+     
