@@ -15,183 +15,165 @@ body {
     margin: 0;
     padding: 30px;
     font-family: Arial, sans-serif;
-    background: #eff9f3;
-    color: #234b35;
+    background: #f4f8f5;
+    color: #26382d;
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: auto;
 }
 
-/* LOGO */
 header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 30px;
-}
-
-.logo {
-    width: 48px;
-    height: 48px;
-    background: #168346;
-    border-radius: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.logo svg {
-    width: 30px;
-    height: 30px;
-}
-
-.nom-logo {
-    font-size: 28px;
-    font-weight: bold;
-    color: #155b32;
-}
-
-.sous-titre {
-    color: #64816d;
-    font-size: 12px;
-    margin-top: 3px;
-}
-
-h1 {
-    color: #155b32;
-    font-size: 25px;
-    margin-bottom: 5px;
-}
-
-.description {
-    color: #789080;
-    font-size: 13px;
+    background: #176b45;
+    color: white;
+    padding: 25px;
+    border-radius: 14px;
     margin-bottom: 25px;
 }
 
-/* CARTES */
-.contenu {
-    display: flex;
-    gap: 20px;
-    align-items: stretch;
+header h1 {
+    margin: 0 0 8px;
 }
 
-.carte {
-    flex: 1;
-    min-width: 0;
+header p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.card {
     background: white;
+    padding: 25px;
     border-radius: 14px;
-    padding: 22px;
-    border-top: 5px solid #20a05a;
-    box-shadow: 0 4px 12px rgba(20,90,50,0.07);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
 }
 
 h2 {
-    font-size: 17px;
-    color: #155b32;
+    color: #176b45;
     margin-top: 0;
-    margin-bottom: 18px;
 }
 
-/* TABLEAU */
 table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    margin-top: 15px;
+}
+
+th, td {
+    padding: 13px 8px;
+    text-align: left;
+    border-bottom: 1px solid #e6eee8;
 }
 
 th {
-    background: #e2f3e8;
-    color: #155b32;
-    padding: 12px 7px;
+    background: #edf5ef;
+    color: #176b45;
 }
 
-td {
-    padding: 12px 7px;
-    text-align: center;
-    border-bottom: 1px solid #e3eee6;
+.form-group {
+    margin-bottom: 18px;
 }
 
-tbody tr:hover {
-    background: #f4faf6;
-}
-
-/* CHAMPS MODIFIABLES */
 label {
     display: block;
-    margin-top: 14px;
-    margin-bottom: 7px;
-    font-size: 13px;
     font-weight: bold;
-    color: #315c40;
+    margin-bottom: 8px;
 }
 
 input, select {
-    display: block;
     width: 100%;
     padding: 12px;
-    border: 1px solid #a9cfb5;
-    border-radius: 7px;
-    background: #ffffff;
-    color: #234b35;
-    font-size: 14px;
-    outline: none;
+    border: 1px solid #ccd9cf;
+    border-radius: 8px;
+    font-size: 15px;
+    background: white;
 }
 
 input:focus, select:focus {
-    border: 2px solid #168346;
-    background: #f7fff9;
+    outline: 2px solid #72ad89;
+    border-color: #176b45;
 }
 
-/* BOUTON */
 button {
     width: 100%;
-    margin-top: 22px;
-    padding: 12px;
-    background: #168346;
-    color: white;
+    padding: 13px;
     border: none;
-    border-radius: 7px;
-    font-size: 14px;
+    border-radius: 8px;
+    background: #176b45;
+    color: white;
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
 }
 
 button:hover {
-    background: #116b39;
+    background: #105536;
 }
 
-/* RESULTAT */
-#resultat {
+.result {
+    margin-top: 22px;
+    padding: 20px;
+    border-radius: 10px;
     display: none;
-    margin-top: 16px;
-    padding: 12px;
-    border-radius: 7px;
-    font-size: 13px;
-    line-height: 1.6;
     text-align: center;
 }
 
-.alerte {
-    background: #fff0ed;
-    color: #c0392b;
+.result h3 {
+    margin-top: 0;
 }
 
-.normal {
-    background: #e6f5eb;
-    color: #168346;
+.result .days {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 12px 0;
 }
 
-/* PETITS ECRANS */
-@media (max-width: 650px) {
+/* Couleurs des trois niveaux de risque */
+
+.risk-high {
+    background: #fde8e8;
+    border: 1px solid #e53935;
+    color: #c62828;
+}
+
+.risk-medium {
+    background: #fff1df;
+    border: 1px solid #f39c12;
+    color: #c77700;
+}
+
+.risk-low {
+    background: #e5f5e9;
+    border: 1px solid #2e9d50;
+    color: #207a3b;
+}
+
+.risk-neutral {
+    background: #edf1f3;
+    border: 1px solid #9aa8ae;
+    color: #455a64;
+}
+
+footer {
+    text-align: center;
+    margin-top: 25px;
+    color: #718078;
+    font-size: 13px;
+}
+
+@media(max-width: 750px) {
     body {
-        padding: 18px;
+        padding: 15px;
     }
 
-    .contenu {
-        flex-direction: column;
+    .main {
+        grid-template-columns: 1fr;
     }
 }
 </style>
@@ -201,203 +183,225 @@ button:hover {
 
 <div class="container">
 
-    <!-- LOGO -->
-    <header>
-        <div class="logo">
-            <svg viewBox="0 0 40 40" fill="none">
-                <path d="M8 23C8 12 19 7 32 8C31 21 25 32 14 32C9 32 6 28 8 23Z"
-                      fill="white"/>
-                <path d="M9 31C15 23 21 18 29 13"
-                      stroke="#168346"
-                      stroke-width="2.5"
-                      stroke-linecap="round"/>
-            </svg>
-        </div>
+<header>
+    <h1>🌿 Inveep - Stock Alert</h1>
+    <p>Suivi intelligent des stocks et anticipation des risques de rupture</p>
+</header>
 
-        <div>
-            <div class="nom-logo">inveep</div>
-            <div class="sous-titre">SMART STOCK MANAGEMENT</div>
-        </div>
-    </header>
+<div class="main">
 
-    <h1>Stock Alert</h1>
-    <p class="description">
-        Suivi des stocks et prévision des ruptures
-    </p>
+    <!-- Tableau des produits -->
+    <div class="card">
+        <h2>📦 Tableau des stocks</h2>
 
-    <div class="contenu">
+        <table>
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Stock</th>
+                    <th>Vente/j</th>
+                </tr>
+            </thead>
 
-        <!-- TABLEAU -->
-        <div class="carte">
-            <h2>État des stocks</h2>
+            <tbody id="productTable"></tbody>
+        </table>
+    </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Produit</th>
-                        <th>Stock</th>
-                        <th>Vente/j</th>
-                    </tr>
-                </thead>
-                <tbody id="tableau"></tbody>
-            </table>
-        </div>
+    <!-- Calculateur -->
+    <div class="card">
+        <h2>📊 Analyse du stock</h2>
 
-        <!-- CALCULATEUR -->
-        <div class="carte">
-            <h2>Calculateur de stock</h2>
-
-            <label for="produit">Type de produit :</label>
-            <select id="produit" onchange="remplirDonnees()">
-                <option value="">Choisir un produit</option>
+        <div class="form-group">
+            <label for="product">Choisir un produit</label>
+            <select id="product" onchange="selectProduct()">
+                <option value="">-- Sélectionner --</option>
             </select>
+        </div>
 
-            <label for="stock">Stock disponible :</label>
-            <input
-                type="number"
-                id="stock"
-                min="0"
-                step="any"
-                placeholder="Saisir le stock disponible"
-            >
+        <div class="form-group">
+            <label for="stock">Stock disponible</label>
+            <input type="number" id="stock" min="0" step="any"
+                   placeholder="Saisir le stock">
+        </div>
 
-            <label for="ventes">Quantité vendue par jour :</label>
-            <input
-                type="number"
-                id="ventes"
-                min="0"
-                step="any"
-                placeholder="Cliquez ici pour saisir une valeur"
-            >
+        <div class="form-group">
+            <label for="sales">Ventes journalières</label>
+            <input type="number" id="sales" min="0" step="any"
+                   placeholder="Saisir les ventes par jour">
+        </div>
 
-            <button type="button" onclick="calculerStock()">
-                Calculer
-            </button>
+        <button onclick="calculateRisk()">
+            Calculer le risque
+        </button>
 
-            <div id="resultat" aria-live="polite"></div>
+        <div id="result" class="result">
+            <h3 id="riskTitle"></h3>
+            <div class="days" id="days"></div>
+            <p id="message"></p>
         </div>
 
     </div>
+
+</div>
+
+<footer>
+    Inveep © 2026 - Gestion intelligente des stocks
+</footer>
+
 </div>
 
 <script>
 
-// DONNEES INITIALES
-const produits = [
-    { nom: "Café 250g", stock: 40, ventes: 4 },
-    { nom: "Huile d'olive 1L", stock: 160, ventes: 24 },
-    { nom: "Pâtes 500g", stock: 75, ventes: 16 },
-    { nom: "Lait 1L", stock: 30, ventes: 0 },
-    { nom: "Sucre 1kg", stock: 220, ventes: 27 }
+// Données des produits
+const products = [
+    { name: "Café 250g", stock: 40, sales: 4 },
+    { name: "Huile d'olive 1L", stock: 160, sales: 24 },
+    { name: "Pâtes 500g", stock: 75, sales: 16 },
+    { name: "Lait 1L", stock: 30, sales: 0 },
+    { name: "Sucre 1kg", stock: 220, sales: 27 }
 ];
 
-const tableau = document.getElementById("tableau");
-const liste = document.getElementById("produit");
-const champStock = document.getElementById("stock");
-const champVentes = document.getElementById("ventes");
-const resultat = document.getElementById("resultat");
+// Remplir le tableau
+function displayProducts() {
 
-// AFFICHER LE TABLEAU ET LES PRODUITS
-produits.forEach((p, index) => {
+    const table = document.getElementById("productTable");
+    const select = document.getElementById("product");
 
-    tableau.innerHTML += `
-        <tr>
-            <td>${p.nom}</td>
+    products.forEach((p, index) => {
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${p.name}</td>
             <td>${p.stock}</td>
-            <td>${p.ventes}</td>
-        </tr>
-    `;
+            <td>${p.sales}</td>
+        `;
 
-    liste.innerHTML += `
-        <option value="${index}">${p.nom}</option>
-    `;
-});
+        table.appendChild(row);
 
-// REMPLIR LES CHAMPS
-function remplirDonnees() {
+        const option = document.createElement("option");
+        option.value = index;
+        option.textContent = p.name;
 
-    const choix = liste.value;
-
-    resultat.style.display = "none";
-
-    if (choix === "") {
-        champStock.value = "";
-        champVentes.value = "";
-        return;
-    }
-
-    const p = produits[Number(choix)];
-
-    champStock.value = p.stock;
-    champVentes.value = p.ventes;
+        select.appendChild(option);
+    });
 }
 
-// EFFACER L'ANCIEN RESULTAT LORS D'UNE MODIFICATION
-champStock.addEventListener("input", function() {
-    resultat.style.display = "none";
-});
+// Sélectionner un produit
+function selectProduct() {
 
-champVentes.addEventListener("input", function() {
-    resultat.style.display = "none";
-});
+    const index = document.getElementById("product").value;
 
-// CALCULER LA RUPTURE DE STOCK
-function calculerStock() {
+    const result = document.getElementById("result");
+    result.style.display = "none";
 
-    const choix = liste.value;
-    const stockTexte = champStock.value;
-    const ventesTexte = champVentes.value;
-
-    resultat.style.display = "block";
-
-    if (choix === "" || stockTexte.trim() === "" ||
-        ventesTexte.trim() === "") {
-
-        resultat.className = "alerte";
-        resultat.textContent = "Veuillez remplir tous les champs.";
+    if (index === "") {
+        document.getElementById("stock").value = "";
+        document.getElementById("sales").value = "";
         return;
     }
 
-    const stock = Number(stockTexte);
-    const ventes = Number(ventesTexte);
+    const p = products[index];
 
-    if (!Number.isFinite(stock) || !Number.isFinite(ventes) ||
-        stock < 0 || ventes < 0) {
+    // Valeurs préremplies, mais modifiables manuellement
+    document.getElementById("stock").value = p.stock;
+    document.getElementById("sales").value = p.sales;
+}
 
-        resultat.className = "alerte";
-        resultat.textContent = "Veuillez saisir des valeurs valides.";
+// Calculer le risque
+function calculateRisk() {
+
+    const stockInput = document.getElementById("stock").value;
+    const salesInput = document.getElementById("sales").value;
+
+    const stock = Number(stockInput);
+    const sales = Number(salesInput);
+
+    const result = document.getElementById("result");
+    const riskTitle = document.getElementById("riskTitle");
+    const daysElement = document.getElementById("days");
+    const message = document.getElementById("message");
+
+    // Vérification des données
+    if (
+        document.getElementById("product").value === "" ||
+        stockInput === "" ||
+        salesInput === "" ||
+        !Number.isFinite(stock) ||
+        !Number.isFinite(sales) ||
+        stock < 0 ||
+        sales < 0
+    ) {
+        alert("Veuillez saisir des valeurs valides.");
         return;
     }
 
-    if (stock === 0) {
-        resultat.className = "alerte";
-        resultat.textContent = "Attention ! Le stock est épuisé.";
+    result.style.display = "block";
+
+    // Réinitialiser les couleurs
+    result.className = "result";
+
+    // Cas où les ventes sont nulles
+    if (sales === 0) {
+
+        result.classList.add("risk-neutral");
+
+        riskTitle.textContent = "Aucune vente enregistrée";
+        daysElement.textContent = "∞";
+        message.textContent =
+            "Les ventes journalières sont nulles. Le risque de rupture ne peut pas être estimé.";
+
         return;
     }
 
-    if (ventes === 0) {
-        resultat.className = "normal";
-        resultat.textContent = "Aucune vente enregistrée.";
-        return;
+    // Calcul du nombre de jours restants
+    const remainingDays = stock / sales;
+
+    daysElement.textContent = remainingDays.toFixed(1) + " jours";
+
+    // Classification du risque
+    if (remainingDays <= 3) {
+
+        result.classList.add("risk-high");
+
+        riskTitle.textContent = "🔴 RISQUE DE RUPTURE";
+
+        message.textContent =
+            "Attention ! Le stock risque d'être épuisé dans 3 jours ou moins. Un réapprovisionnement est urgent.";
+
     }
 
-    const jours = Math.ceil(stock / ventes);
+    else if (remainingDays <= 7) {
 
-    if (jours <= 3) {
-        resultat.className = "alerte";
-        resultat.textContent =
-            "Alerte ! Rupture estimée dans " + jours + " jour(s).";
-    } else {
-        resultat.className = "normal";
-        resultat.textContent =
-            "Stock suffisant. Rupture estimée dans " + jours + " jours.";
+        result.classList.add("risk-medium");
+
+        riskTitle.textContent = "🟠 RISQUE MOYEN";
+
+        message.textContent =
+            "Le stock est limité. Il est conseillé de prévoir un réapprovisionnement prochainement.";
+
+    }
+
+    else {
+
+        result.classList.add("risk-low");
+
+        riskTitle.textContent = "🟢 FAIBLE RISQUE";
+
+        message.textContent =
+            "Le stock est suffisant. Aucun réapprovisionnement urgent n'est nécessaire.";
+
     }
 }
+
+// Initialisation
+displayProducts();
 
 </script>
 
 </body>
 </html>
+
 
 
 
