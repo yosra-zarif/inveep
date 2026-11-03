@@ -29,6 +29,83 @@
 
 <body>
   <!-- ÉTAPE 2 : le contenu de la page -->
-  <img src="logo.png" height="60" alt="Inveep"
+  <img src="logo.png" height="60" alt="Inveep" onerror="this.outerHTML='<h1>inveep</h1>'">
+  <h2>Stock Alert</h2>
+  <p>Prévoyez la rupture de stock avant qu'elle n'arrive.</p>
+
+  <div class="carte">
+    <h3>Tableau des produits</h3>
+    <table id="tableau"></table>
+  </div>
+
+  <div class="carte">
+    <h3>Calculer une prévision</h3>
+    Type de produit<br>
+    <select id="produit"></select><br><br>
+    Stock actuel<br>
+    <input id="stock" type="number" value="50"><br><br>
+    Ventes par jour<br>
+    <input id="ventes" type="number" value="8"><br><br>
+    <button onclick="calculer()">Calculer</button>
+    <p id="resultat"></p>
+  </div>
+
+  <script>
+    // ÉTAPE 3 : la formule du modèle (donnée par modele.py)
+    function prevoir(stock, ventes) {
+      var jours = 0.116 * stock - 2.15 * ventes + 18.391;
+      if (jours < 0) { jours = 0; }
+      return Math.round(jours);
+    }
+
+    // ÉTAPE 4 : le niveau de risque
+    function risque(jours) {
+      if (jours < 7)   { return "eleve"; }
+      if (jours <= 15) { return "moyen"; }
+      return "faible";
+    }
+    var noms = { eleve: "Élevé", moyen: "Moyen", faible: "Faible" };
+    var couleurs = { eleve: "#e5484d", moyen: "#f0a30a", faible: "#1f9d55" };
+
+    // ÉTAPE 5 : lire le fichier Excel et afficher le tableau exactement comme dans Excel
+    fetch("inveep.xlsx")
+      .then(function (reponse) { return reponse.arrayBuffer(); })
+      .then(function (donnees) {
+        var fichier = XLSX.read(donnees, { type: "array" });
+        var lignes = XLSX.utils.sheet_to_json(fichier.Sheets[fichier.SheetNames[0]], { header: 1 });
+
+        // la 1re ligne = les titres (Produit, stock, vente/j)
+        var html = "<tr><th>" + String(lignes[0][0]).trim() + "</th><th>" + lignes[0][1] + "</th><th>" + lignes[0][2] + "</th></tr>";
+
+        // les autres lignes = les produits
+        for (var i = 1; i < lignes.length; i++) {
+          html += "<tr><td>" + lignes[i][0] + "</td><td>" + lignes[i][1] + "</td><td>" + lignes[i][2] + "</td></tr>";
+          document.getElementById("produit").innerHTML += "<option>" + lignes[i][0] + "</option>";
+        }
+        document.getElementById("tableau").innerHTML = html;
+      });
+
+    // ÉTAPE 6 : le bouton Calculer
+    function calculer() {
+      var jours = prevoir(Number(stock.value), Number(ventes.value));
+      var r = risque(jours);
+      var verdict = "Non, pas de rupture prévue";
+      if (r == "eleve") { verdict = "Oui, rupture probable !"; }
+      if (r == "moyen") { verdict = "Pas encore, à surveiller"; }
+
+      var largeur = Math.min(100, Math.round(jours / 30 * 100));
+
+      resultat.innerHTML =
+        "<b>" + produit.value + "</b>" +
+        "<div class='grand'>" + jours + " <span>jours avant rupture</span></div>" +
+        "<div class='calc-jauge'><span style='width:" + largeur + "%; background:" + couleurs[r] + "'></span></div>" +
+        "Rupture ? <b>" + verdict + "</b><br>" +
+        "<span class='badge " + r + "'>Risque " + noms[r].toLowerCase() + "</span>";
+    }
+    calculer();
+  </script>
+</body>
+</html>
+ 
    
    
