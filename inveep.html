@@ -1,437 +1,115 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inveep - Stock Alert</title>
-
 <style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    padding: 35px;
-    font-family: Arial, sans-serif;
-    background: #f5f5f2;
-    color: #171717;
-}
-
-.container {
-    max-width: 1150px;
-    margin: auto;
-}
-
-/* Logo */
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 38px;
-}
-
-.logo-icon {
-    width: 55px;
-    height: 55px;
-    background: #07120d;
-    color: white;
-    border-radius: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 27px;
-}
-
-.logo h1 {
-    margin: 0;
-    font-size: 32px;
-    letter-spacing: 1px;
-}
-
-.logo p {
-    margin: 5px 0 0;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-/* Titre */
-.page-title {
-    margin-bottom: 30px;
-}
-
-.page-title h2 {
-    font-size: 30px;
-    margin-bottom: 12px;
-}
-
-.page-title p {
-    font-size: 16px;
-}
-
-/* Blocs principaux */
-.main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 22px;
-}
-
-.card {
-    background: #fffefa;
-    padding: 25px;
-    border-radius: 15px;
-    border-top: 6px solid #075333;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.04);
-}
-
-.card h3 {
-    margin-top: 5px;
-    margin-bottom: 25px;
-    font-size: 21px;
-}
-
-/* Tableau */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th {
-    background: #e9edef;
-    padding: 15px 8px;
-    text-align: center;
-}
-
-td {
-    padding: 15px 8px;
-    text-align: center;
-    border-bottom: 1px solid #eeeeee;
-}
-
-/* Formulaire */
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 9px;
-}
-
-select, input {
-    width: 100%;
-    padding: 13px;
-    border: 1px solid #cccccc;
-    border-radius: 8px;
-    font-size: 15px;
-    background: white;
-    color: #333;
-}
-
-button {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 8px;
-    background: linear-gradient(90deg, #159d80, #006044);
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-button:hover {
-    opacity: 0.9;
-}
-
-/* Message de résultat */
-.result {
-    margin-top: 17px;
-    padding: 18px 12px;
-    border-radius: 8px;
-    background: #f1f2f0;
-    text-align: center;
-    font-size: 15px;
-    font-weight: bold;
-    display: none;
-}
-
-/* Couleurs du message uniquement */
-.risk-red {
-    color: #dc2626;
-}
-
-.risk-orange {
-    color: #e58a00;
-}
-
-.risk-green {
-    color: #16803c;
-}
-
-.risk-neutral {
-    color: #64746c;
-}
-
-@media (max-width: 750px) {
-    body {
-        padding: 15px;
-    }
-
-    .main {
-        grid-template-columns: 1fr;
-    }
-}
+*{box-sizing:border-box}
+body{margin:0;padding:35px;font-family:Arial,sans-serif;background:#f5f5f2;color:#171717}
+.container{max-width:1150px;margin:auto}
+.logo{display:flex;align-items:center;gap:15px;margin-bottom:38px}
+.logo-icon{width:55px;height:55px;background:#07120d;color:#fff;border-radius:13px;display:grid;place-items:center;font-size:27px}
+h1{margin:0;font-size:32px}
+.logo p{margin:5px 0 0;font-size:14px;font-weight:bold}
+.main{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.card{background:#fffefa;padding:25px;border-radius:15px;border-top:6px solid #075333;box-shadow:0 3px 12px #0000000a}
+h3{margin:5px 0 25px;font-size:21px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:15px 8px;text-align:center}
+th{background:#e9edef}
+td{border-bottom:1px solid #eee}
+label{display:block;font-weight:bold;margin:20px 0 9px}
+select,input{width:100%;padding:13px;border:1px solid #ccc;border-radius:8px;font-size:15px}
+button{width:100%;margin-top:20px;padding:15px;border:0;border-radius:8px;background:linear-gradient(90deg,#159d80,#006044);color:#fff;font-size:16px;font-weight:bold;cursor:pointer}
+#result{display:none;margin-top:17px;padding:18px 12px;border-radius:8px;background:#f1f2f0;text-align:center;font-weight:bold}
+@media(max-width:750px){body{padding:15px}.main{grid-template-columns:1fr}}
 </style>
 </head>
-
 <body>
-
 <div class="container">
+  <div class="logo">
+    <div class="logo-icon">◈</div>
+    <div><h1>inveep</h1><p>SMART STOCK MANAGEMENT</p></div>
+  </div>
 
-    <!-- Logo Inveep -->
-    <div class="logo">
-        <div class="logo-icon">◈</div>
-        <div>
-            <h1>inveep</h1>
-            <p>SMART STOCK MANAGEMENT</p>
-        </div>
+  <h2>Stock Alert</h2>
+  <p>Suivi des stocks et prévision des ruptures</p>
+
+  <div class="main">
+    <div class="card">
+      <h3>État des stocks</h3>
+      <table>
+        <thead><tr><th>Produit</th><th>Stock</th><th>Vente/j</th></tr></thead>
+        <tbody id="table"></tbody>
+      </table>
     </div>
 
-    <!-- Titre -->
-    <div class="page-title">
-        <h2>Stock Alert</h2>
-        <p>Suivi des stocks et prévision des ruptures</p>
+    <div class="card">
+      <h3>Calculateur de stock</h3>
+      <label>Type de produit :</label>
+      <select id="product"></select>
+      <label>Stock disponible :</label>
+      <input type="number" id="stock" min="0" step="any">
+      <label>Ventes par jour :</label>
+      <input type="number" id="sales" min="0" step="any">
+      <button id="calc">Calculer</button>
+      <div id="result"></div>
     </div>
-
-    <div class="main">
-
-        <!-- État des stocks -->
-        <div class="card">
-
-            <h3>État des stocks</h3>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Produit</th>
-                        <th>Stock</th>
-                        <th>Vente/j</th>
-                    </tr>
-                </thead>
-
-                <tbody id="productTable"></tbody>
-            </table>
-
-        </div>
-
-        <!-- Calculateur -->
-        <div class="card">
-
-            <h3>Calculateur de stock</h3>
-
-            <div class="form-group">
-                <label for="product">Type de produit :</label>
-
-                <select id="product" onchange="selectProduct()">
-                    <option value="">Sélectionner un produit</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="stock">Stock disponible :</label>
-
-                <input type="number" id="stock" min="0" step="any">
-            </div>
-
-            <div class="form-group">
-                <label for="sales">Ventes par jour :</label>
-
-                <input type="number" id="sales" min="0" step="any">
-            </div>
-
-            <button onclick="calculateStock()">Calculer</button>
-
-            <!-- Message de résultat -->
-            <div id="result" class="result"></div>
-
-        </div>
-
-    </div>
-
+  </div>
 </div>
 
 <script>
-
-// Liste des produits
 const products = [
-    { name: "Café 250g", stock: 40, sales: 4 },
-    { name: "Huile d'olive 1L", stock: 160, sales: 24 },
-    { name: "Pâtes 500g", stock: 75, sales: 16 },
-    { name: "Lait 1L", stock: 30, sales: 0 },
-    { name: "Sucre 1kg", stock: 220, sales: 27 }
+  {name:"Café 250g", stock:40, sales:4},
+  {name:"Huile d'olive 1L", stock:160, sales:24},
+  {name:"Pâtes 500g", stock:75, sales:16},
+  {name:"Lait 1L", stock:30, sales:0},
+  {name:"Sucre 1kg", stock:220, sales:27}
 ];
+const $ = id => document.getElementById(id);
 
-// Afficher les produits dans le tableau et la liste
-function displayProducts() {
-
-    const table = document.getElementById("productTable");
-    const select = document.getElementById("product");
-
-    table.innerHTML = "";
-    select.innerHTML = '<option value="">Sélectionner un produit</option>';
-
-    products.forEach((p, index) => {
-
-        table.innerHTML += `
-            <tr>
-                <td>${p.name}</td>
-                <td>${p.stock}</td>
-                <td>${p.sales}</td>
-            </tr>
-        `;
-
-        const option = document.createElement("option");
-        option.value = index;
-        option.textContent = p.name;
-
-        select.appendChild(option);
-    });
+function display() {
+  const i = $("product").value;
+  $("table").innerHTML = products.map(p =>
+    `<tr><td>${p.name}</td><td>${p.stock}</td><td>${p.sales}</td></tr>`).join("");
+  $("product").innerHTML = '<option value="">Sélectionner un produit</option>' +
+    products.map((p, k) => `<option value="${k}">${p.name}</option>`).join("");
+  $("product").value = i;
 }
 
-// Sélectionner un produit
-function selectProduct() {
+$("product").onchange = () => {
+  const p = products[$("product").value];
+  $("stock").value = p ? p.stock : "";
+  $("sales").value = p ? p.sales : "";
+  $("result").style.display = "none";
+};
 
-    const index = document.getElementById("product").value;
-    const result = document.getElementById("result");
+$("calc").onclick = () => {
+  const i = $("product").value, stock = +$("stock").value, sales = +$("sales").value;
+  if (i === "" || $("stock").value === "" || $("sales").value === "" || stock < 0 || sales < 0)
+    return alert("Veuillez sélectionner un produit et saisir des valeurs valides.");
 
-    result.style.display = "none";
+  Object.assign(products[i], {stock, sales});
+  display();
 
-    if (index === "") {
-        document.getElementById("stock").value = "";
-        document.getElementById("sales").value = "";
-        return;
-    }
+  const days = Math.ceil(stock / sales);
+  const [color, msg] =
+    sales === 0 ? ["#64746c", "Aucune vente enregistrée. Le risque de rupture ne peut pas être estimé."] :
+    stock / sales <= 3 ? ["#dc2626", `Stock insuffisant. Risque de rupture dans ${days} jour(s).`] :
+    stock / sales <= 7 ? ["#e58a00", `Risque moyen. Rupture estimée dans ${days} jour(s).`] :
+    ["#16803c", `Faible risque. Stock suffisant. Rupture estimée dans ${days} jour(s).`];
 
-    document.getElementById("stock").value = products[index].stock;
-    document.getElementById("sales").value = products[index].sales;
-}
+  Object.assign($("result"), {textContent: msg});
+  Object.assign($("result").style, {display: "block", color});
+};
 
-// Calculer le stock
-function calculateStock() {
-
-    const index = document.getElementById("product").value;
-
-    const stockInput = document.getElementById("stock").value;
-    const salesInput = document.getElementById("sales").value;
-
-    const stock = Number(stockInput);
-    const sales = Number(salesInput);
-
-    const result = document.getElementById("result");
-
-    // Vérification
-    if (
-        index === "" ||
-        stockInput === "" ||
-        salesInput === "" ||
-        !Number.isFinite(stock) ||
-        !Number.isFinite(sales) ||
-        stock < 0 ||
-        sales < 0
-    ) {
-        alert("Veuillez sélectionner un produit et saisir des valeurs valides.");
-        return;
-    }
-
-    // Actualiser les données du produit
-    products[index].stock = stock;
-    products[index].sales = sales;
-
-    displayProducts();
-
-    // Restaurer le produit sélectionné
-    document.getElementById("product").value = index;
-
-    result.style.display = "block";
-
-    // Réinitialiser les classes
-    result.className = "result";
-
-    // Aucune vente
-    if (sales === 0) {
-
-        result.classList.add("risk-neutral");
-
-        result.textContent =
-            "Aucune vente enregistrée. Le risque de rupture ne peut pas être estimé.";
-
-        return;
-    }
-
-    // Calcul des jours avant rupture
-    const days = stock / sales;
-
-    const daysRounded = Math.ceil(days);
-
-    // RISQUE DE RUPTURE : ROUGE
-    if (days <= 3) {
-
-        result.classList.add("risk-red");
-
-        result.textContent =
-            "Stock insuffisant. Risque de rupture dans " +
-            daysRounded + " jour(s).";
-
-    }
-
-    // RISQUE MOYEN : ORANGE
-    else if (days <= 7) {
-
-        result.classList.add("risk-orange");
-
-        result.textContent =
-            "Risque moyen. Rupture estimée dans " +
-            daysRounded + " jour(s).";
-
-    }
-
-    // FAIBLE RISQUE : VERT
-    else {
-
-        result.classList.add("risk-green");
-
-        result.textContent =
-            "Faible risque. Stock suffisant. Rupture estimée dans " +
-            daysRounded + " jour(s).";
-
-    }
-
-}
-
-// Initialisation
-displayProducts();
-
+display();
 </script>
-
 </body>
 </html>
 
 
+
     
-    
-    
-      
-
-
-      
-
-
-        
-
-
-
-     
+            
